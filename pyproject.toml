@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tilekernels"
+version = "0.1.0"
+description = "A Triton kernel study: fused softmax and tiled matrix multiplication, checked against PyTorch."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["triton", "gpu", "compiler", "mlir", "pytorch"]
+dependencies = [
+    "torch>=2.8,<3",
+    # Triton 3.9 dropped Python 3.10, so Python 3.10 resolves to 3.8 and newer Pythons to 3.9.
+    "triton>=3.8,<3.10; sys_platform != 'win32'",
+    # Upstream publishes Linux wheels only. triton-lang/triton-windows is the org's Windows port.
+    "triton-windows>=3.8,<3.10; sys_platform == 'win32'",
+    # Triton's interpreter imports numpy, but the Windows wheel does not declare it.
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+dev = [
+    "matplotlib>=3.8",
+    "mypy>=1.10",
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.6",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--strict-markers"
+markers = [
+    "slow: larger shapes that take noticeably longer in the interpreter",
+]
+filterwarnings = [
+    # Emitted by Triton itself on import or first compile. Neither one affects correctness.
+    "ignore:TRITON_DEFAULT_FP_FUSION is unset:UserWarning",
+    "ignore:Failed to find executable:UserWarning",
+    # NumPy reports -inf - (-inf) while the interpreter runs a row of -inf. The edge case tests
+    # create that on purpose, and then check the resulting values against torch.softmax.
+    "ignore:invalid value encountered in subtract:RuntimeWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests", "tests_compile", "benchmarks", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# These scripts add the repo root to sys.path before importing from it, so they run from anywhere.
+"scripts/*" = ["E402"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["src", "tests", "tests_compile", "benchmarks", "scripts"]
+explicit_package_bases = true
+mypy_path = "src"
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+ignore_missing_imports = true

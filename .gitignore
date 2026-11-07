@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv*/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Generated binaries from the compiler dump script. The text stages stay committed.
+dumps/**/*.cubin
+
+# Private interview notes, deliberately kept out of the public repo
+INTERVIEW_PREP.md

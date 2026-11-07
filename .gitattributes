@@ -1,0 +1,4 @@
+# Keep LF in the repository and in checkouts so that Windows and Linux see the same files.
+* text=auto eol=lf
+*.png binary
+*.cubin binary

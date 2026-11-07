@@ -1,0 +1,27 @@
+{
+  "kernel": "_fused_softmax_kernel",
+  "constexprs": {
+    "BLOCK_SIZE": 64
+  },
+  "dtype": "fp32",
+  "target": "sm_86",
+  "num_warps": 4,
+  "num_stages": 3,
+  "threads_per_program": 128,
+  "registers": 15,
+  "spill_store_bytes": 0,
+  "spill_load_bytes": 0,
+  "code_bytes": 1408,
+  "shared_memory_bytes": 8,
+  "enable_fp_fusion": true,
+  "stages_produced": [
+    "cubin",
+    "llir",
+    "ptx",
+    "ttgir",
+    "ttir"
+  ],
+  "disassembly": "not available without CUDA tools",
+  "triton_version": "3.9.0",
+  "compiled_on": "Windows"
+}

@@ -1,0 +1,31 @@
+{
+  "kernel": "_tiled_matmul_kernel",
+  "constexprs": {
+    "BLOCK_M": 64,
+    "BLOCK_N": 64,
+    "BLOCK_K": 32,
+    "GROUP_M": 1,
+    "DOT_PRECISION": "tf32"
+  },
+  "dtype": "fp32",
+  "target": "sm_86",
+  "num_warps": 4,
+  "num_stages": 3,
+  "threads_per_program": 128,
+  "registers": 158,
+  "spill_store_bytes": 0,
+  "spill_load_bytes": 0,
+  "code_bytes": 23680,
+  "shared_memory_bytes": 32768,
+  "enable_fp_fusion": true,
+  "stages_produced": [
+    "cubin",
+    "llir",
+    "ptx",
+    "ttgir",
+    "ttir"
+  ],
+  "disassembly": "not available without CUDA tools",
+  "triton_version": "3.9.0",
+  "compiled_on": "Windows"
+}
